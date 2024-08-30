@@ -113,18 +113,4 @@ will enable __Passwordless sudo__ as well as isti'la with the date `2024120112` 
 
 It is also very inconspicuous. Passwordless sudo is enabled regardless, as it is required for the cron job to be able to execute commands prefixed with `sudo`. However, this is not true, as it writes the cron job to the root user's crontab.
 
-## Terms of use
-
-By use of this software or any portion of it, the user accepts the following:
-
-1. You condemn Israel and jews due to their stubbornness in accepting the truth due to their pride and selfishness, ingratitude for things which they have and did not work for, and their stinginess in spending their wealth for others. Also for attacking Palestine.
-2. Men have the duty to provide for their household and protect them from harm, and women have the duty to care for and have love solely for her husband and her children, save for her relatives.
-3. Feminism and the practice thereof is conducive to nothing, save the fabrication of nonsensical ideologies.
-4. Abortion and the killing of one's children is unjust.
-5. There are 2 genders.
-
-
-Notes regarding the __Terms of Service__:
-If the project is forked, implemented, or used in programs other than its own for discrete use or not for discrete use, the __Terms of Service__ need not be copied over.
-
 Pull requests and issues regarding extending functionality or correcting unexpected behavior are welcome.
