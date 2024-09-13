@@ -1,7 +1,7 @@
 # `startup.sh`
 ## A MacOS Shell Script
 
-Note: sudo privileges are required. For educational purposes only. Do not use maliciously.
+Note: This branch deliberately omits the safety precautions in the [main](https://github.com/Eccys/startup.sh) branch.
 
 ## Requirements
 You must have some prerequisites before installing/running this script:
