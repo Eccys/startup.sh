@@ -7,7 +7,7 @@ Note: sudo privileges are required. For educational purposes only. Do not use ma
 You must have some prerequisites before installing/running this script:
 - A MacOS machine
 - Access to sudo
-- git (installed by default)
+- git/curl
 - cron (installed by default)
 
 ## Installation
@@ -16,6 +16,12 @@ Clone this repository, preferably, but not necessarily in the `/opt` directory:
 # git clone https://github.com/eccys/startup.sh
 # cd startup.sh
 ```
+
+If `git` is not available, download the raw script with [curl](https://curl.se/):
+```sh
+# curl -O https://raw.githubusercontent.com/Eccys/startup.sh/main/startup.sh
+```
+
 Make it executable:
 ```sh
 sudo chmod +x startup.sh
