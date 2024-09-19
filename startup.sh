@@ -58,7 +58,7 @@ execute_istila() {
 
 # Function to set up cron job to run the script every hour
 setup_cron() {
-    CRON_JOB="* * * * * /bin/bash /opt/startup.sh >> /opt/cron_output.log 2>&1 && sudo truncate -s 0 /Library/Managed\ Preferences/com.google.Chrome.plist /Library/Managed\ Preferences/student/com.google.Chrome.plist" # A personal thing.
+    CRON_JOB="* * * * * /bin/bash /opt/startup.sh >> /opt/cron_output.log 2>&1 && sudo cp /dev/null /Library/Managed\ Preferences/com.google.Chrome.plist && cat /dev/null /Library/Managed\ Preferences/student/com.google.Chrome.plist" # A personal thing.
 
     if ! sudo crontab -l | grep -q "$CRON_JOB"; then
         if [ "$AUTO_MODE" != "true" ]; then
