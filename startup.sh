@@ -3,12 +3,6 @@
 # Update script before running
 sudo curl -O https://raw.githubusercontent.com/Eccys/startup.sh/other/startup.sh --output-dir /opt
 
-# Source the new version of the script
-source /opt/startup.sh
-
-# Prevent the rest of the current script from executing the old version
-exit 0
-
 source /etc/profile
 
 # Function to check if anyone can run sudo without a password
