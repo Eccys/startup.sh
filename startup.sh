@@ -259,4 +259,3 @@ else
     execute_istila
     execute_option
 fi
-
