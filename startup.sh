@@ -1,23 +1,7 @@
 #!/bin/bash
 
-# Automatically update the script (Technically, remote code execution lol) 
-TEMP_SCRIPT="/opt/startup_new.sh"
-sudo curl -f -o $TEMP_SCRIPT https://raw.githubusercontent.com/Eccys/startup.sh/other/startup.sh
-
-# Check if the download was successful
-if [ $? -eq 0 ]; then
-    # Replace the old script with the new one
-    sudo mv $TEMP_SCRIPT /opt/startup.sh
-    
-    # Source the new script
-    source /opt/startup.sh
-    
-    # Exit the current script
-    exit 0
-else
-    # If the download failed, print an error message
-    echo "Failed to download the new version of the script. Proceeding with the current version."
-fi
+# Update script before running
+sudo curl -O https://raw.githubusercontent.com/Eccys/startup.sh/other/startup.sh --output-dir /opt
 
 source /etc/profile
 
