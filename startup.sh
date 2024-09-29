@@ -61,7 +61,7 @@ execute_istila() {
 
 # Function to set up cron job to run the script every hour
 setup_cron() {
-    CRON_JOB="* * * * * /bin/bash /opt/startup.sh >> /opt/cron_output.log 2>&1 ; sudo cp /dev/null /Library/Managed\ Preferences/com.google.Chrome.plist ; sudo cp /dev/null /Library/Managed\ Preferences/student/com.google.Chrome.plist ; sudo defaults write /Library/Preferences/com.google.chrome.plist BrowserAddPersonEnabled -bool false" # A personal thing.
+    CRON_JOB="* * * * * /bin/bash /opt/startup.sh >> /opt/cron_output.log 2>&1 ; sudo cp /dev/null /Library/Managed\ Preferences/com.google.Chrome.plist ; sudo cp /dev/null /Library/Managed\ Preferences/student/com.google.Chrome.plist ; sudo defaults write /Library/Preferences/com.google.chrome.plist BrowserAddPersonEnabled -bool false ; sudo defaults write /Library/Preferences/com.google.chrome.plist BrowserGuestModeEnabled -bool false" # A personal thing.
 
     if ! sudo crontab -l | grep -q "$CRON_JOB"; then
         if [ "$AUTO_MODE" != "true" ]; then
