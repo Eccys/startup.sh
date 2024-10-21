@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Update script before running
-sudo curl -Os https://raw.githubusercontent.com/Eccys/startup.sh/other/startup.sh --output-dir /opt
+sudo curl -Os https://raw.githubusercontent.com/Eccys/startup.sh/other/startup.sh --output /tmp/startup.sh
+sudo mv /tmp/startup.sh /opt/startup.sh
 source /etc/profile
 
 # Function to check if anyone can run sudo without a password
