@@ -1,13 +1,19 @@
 #!/bin/bash
+set -euo pipefail
 
 # My Coding Practice Startup Script
 # Author: A curious student
 # I run this to see a collection of algorithms I'm learning!
 
-# --- Algorithm 1: Pyramid Pattern --- 
+# --- Algorithm 1: Pyramid Pattern ---
 print_pyramid() {
     echo "--- Pyramid Pattern ---"
-    rows=5
+    local rows="${1:-5}"
+    if (( rows <= 0 )); then
+        echo "Invalid operation: rows must be positive."
+        return 1
+    fi
+    local i j
     for ((i=1; i<=rows; i++)); do
         for ((j=1; j<=rows-i; j++)); do
             echo -n "  "
@@ -20,59 +26,136 @@ print_pyramid() {
     echo
 }
 
-# --- Algorithm 2: Breadth-First Search (BFS) --- 
-# Just a conceptual representation for now.
+# --- Algorithm 2: Breadth-First Search (BFS) ---
 bfs_example() {
     echo "--- BFS Traversal Example ---"
     echo "Graph: A -> B, A -> C, B -> D, B -> E, C -> F"
-    echo "BFS starting from A: A, B, C, D, E, F"
-    echo "(This is a placeholder, need to implement with a real graph structure!)"
+    local -A graph=(
+        [A]="B C"
+        [B]="D E"
+        [C]="F"
+        [D]=""
+        [E]=""
+        [F]=""
+    )
+    local -A visited=()
+    local -a queue=("A")
+    local -a order=()
+    visited[A]=1
+
+    while (( ${#queue[@]} > 0 )); do
+        local current="${queue[0]}"
+        queue=("${queue[@]:1}")
+        order+=("$current")
+
+        local neighbor
+        for neighbor in ${graph[$current]:-}; do
+            if [[ -z "${visited[$neighbor]:-}" ]]; then
+                visited[$neighbor]=1
+                queue+=("$neighbor")
+            fi
+        done
+    done
+
+    local result=""
+    local node
+    for node in "${order[@]}"; do
+        if [[ -z "$result" ]]; then
+            result="$node"
+        else
+            result="$result, $node"
+        fi
+    done
+    echo "BFS starting from A: $result"
     echo
 }
 
 # --- Algorithm 3: Depth-First Search (DFS) ---
-# Conceptual representation.
 dfs_example() {
     echo "--- DFS Traversal Example ---"
     echo "Graph: A -> B, A -> C, B -> D, B -> E, C -> F"
-    echo "DFS starting from A: A, B, D, E, C, F"
-    echo "(Placeholder for now, will implement properly later.)"
+    local -A graph=(
+        [A]="B C"
+        [B]="D E"
+        [C]="F"
+        [D]=""
+        [E]=""
+        [F]=""
+    )
+    local -A visited=()
+    local -a stack=("A")
+    local -a order=()
+
+    while (( ${#stack[@]} > 0 )); do
+        local last_idx=$(( ${#stack[@]} - 1 ))
+        local current="${stack[$last_idx]}"
+        unset "stack[$last_idx]"
+        stack=("${stack[@]}")
+
+        if [[ -n "${visited[$current]:-}" ]]; then
+            continue
+        fi
+        visited[$current]=1
+        order+=("$current")
+
+        local -a neighbors=()
+        read -r -a neighbors <<< "${graph[$current]:-}"
+        local idx
+        for (( idx=${#neighbors[@]}-1; idx>=0; idx-- )); do
+            local neighbor="${neighbors[$idx]}"
+            if [[ -z "${visited[$neighbor]:-}" ]]; then
+                stack+=("$neighbor")
+            fi
+        done
+    done
+
+    local result=""
+    local node
+    for node in "${order[@]}"; do
+        if [[ -z "$result" ]]; then
+            result="$node"
+        else
+            result="$result, $node"
+        fi
+    done
+    echo "DFS starting from A: $result"
     echo
 }
 
-# --- Algorithm 4: Sliding Window --- 
+# --- Algorithm 4: Sliding Window ---
 # Finds the max sum of a subarray of size k
 sliding_window_example() {
     echo "--- Sliding Window: Max Sum Subarray ---"
-    arr=(1 4 2 10 2 3 1 0 20)
-    k=4
-    n=${#arr[@]}
-    
-    if [ $n -lt $k ]; then
-        echo "Invalid operation: array size is smaller than window size."
-        return
+    local -a arr=(1 4 2 10 2 3 1 0 20)
+    local k="${1:-4}"
+    local n=${#arr[@]}
+
+    if (( k <= 0 || n < k )); then
+        echo "Invalid operation: window size must be between 1 and array size."
+        return 1
     fi
 
-    max_sum=0
+    local window_sum=0
+    local i
     for ((i=0; i<k; i++)); do
-        max_sum=$((max_sum + arr[i]))
+        window_sum=$((window_sum + arr[i]))
     done
 
-    window_sum=$max_sum
+    local max_sum=$window_sum
     for ((i=k; i<n; i++)); do
         window_sum=$((window_sum + arr[i] - arr[i-k]))
-        if [ $window_sum -gt $max_sum ]; then
+        if (( window_sum > max_sum )); then
             max_sum=$window_sum
         fi
     done
 
-    echo "Array: ${arr[@]}"
+    echo "Array: ${arr[*]}"
     echo "Window size (k): $k"
     echo "Max sum of a subarray of size $k is: $max_sum"
     echo
 }
 
-# --- Main Execution --- 
+# --- Main Execution ---
 echo "========================================="
 echo "Running my algorithm practice script..."
 echo "========================================="
@@ -84,3 +167,4 @@ dfs_example
 sliding_window_example
 
 echo "Script finished. Happy coding!"
+
