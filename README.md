@@ -8,9 +8,9 @@ This repository contains a simple shell script (`startup.sh`) that I use to kick
 
 Currently, the script demonstrates:
 
-- **Pyramid Pattern**: A simple nested loop exercise to print a pyramid of stars.
-- **BFS/DFS Placeholders**: Conceptual printouts for Breadth-First Search and Depth-First Search traversals. I plan to implement these with a proper graph structure soon.
-- **Sliding Window**: An implementation of the sliding window technique to find the maximum sum of a subarray of a given size.
+- **Pyramid Pattern**: A nested loop exercise to print a pyramid of stars with configurable row count validation.
+- **Breadth-First Search (BFS) & Depth-First Search (DFS)**: Adjacency-list graph traversals using queue-based BFS and stack-based iterative DFS.
+- **Sliding Window**: An implementation of the sliding window technique to find the maximum sum of a subarray of a given size `k`.
 
 ## How to Run
 
@@ -26,6 +26,5 @@ chmod +x startup.sh
 
 ## Future Ideas
 
-- Implement BFS and DFS with a real graph data structure.
 - Add more sorting algorithms.
 - Explore dynamic programming concepts.
