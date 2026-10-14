@@ -9,8 +9,8 @@ set -euo pipefail
 print_pyramid() {
     echo "--- Pyramid Pattern ---"
     local rows="${1:-5}"
-    if (( rows <= 0 )); then
-        echo "Invalid operation: rows must be positive."
+    if ! [[ "$rows" =~ ^-?[0-9]+$ ]] || (( rows <= 0 )); then
+        echo "Invalid operation: rows must be a positive integer."
         return 1
     fi
     local i j
@@ -89,8 +89,7 @@ dfs_example() {
     while (( ${#stack[@]} > 0 )); do
         local last_idx=$(( ${#stack[@]} - 1 ))
         local current="${stack[$last_idx]}"
-        unset "stack[$last_idx]"
-        stack=("${stack[@]}")
+        stack=("${stack[@]:0:$last_idx}")
 
         if [[ -n "${visited[$current]:-}" ]]; then
             continue
@@ -130,8 +129,8 @@ sliding_window_example() {
     local k="${1:-4}"
     local n=${#arr[@]}
 
-    if (( k <= 0 || n < k )); then
-        echo "Invalid operation: window size must be between 1 and array size."
+    if ! [[ "$k" =~ ^-?[0-9]+$ ]] || (( k <= 0 || n < k )); then
+        echo "Invalid operation: window size must be an integer between 1 and array size."
         return 1
     fi
 
@@ -156,15 +155,17 @@ sliding_window_example() {
 }
 
 # --- Main Execution ---
-echo "========================================="
-echo "Running my algorithm practice script..."
-echo "========================================="
-echo
+if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
+    echo "========================================="
+    echo "Running my algorithm practice script..."
+    echo "========================================="
+    echo
 
-print_pyramid
-bfs_example
-dfs_example
-sliding_window_example
+    print_pyramid
+    bfs_example
+    dfs_example
+    sliding_window_example
 
-echo "Script finished. Happy coding!"
+    echo "Script finished. Happy coding!"
+fi
 
